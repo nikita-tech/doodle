@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
+    <div class="container">
+        <h2>Striped Rows</h2>
+        <p>The .table-striped class adds zebra-stripes to a table:</p>            
+        <table class="table table-striped" id="mytable">
+          <tbody>
+
+          </tbody>
+        </table>
+        <button onclick = "api_call_and_table_update('#mytable')"> 
+            click here 
+        </button> 
+      </div>      
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+       function api_call_and_table_update(selector)
+       { 
+        var settings = {
+            "async": true,
+            "crossDomain": true,
+            "url": "http://127.0.0.1:5000/activedata",
+            "method": "GET",
+            "headers": {
+                "User-Agent": "PostmanRuntime/7.19.0",
+                "Accept": "*/*",
+                "Cache-Control": "no-cache",
+                "Postman-Token": "e54056e4-8f33-4f26-91ae-2b2c35133d1a,84c92323-8f69-4955-8b46-53bc25513f17",
+                "Host": "127.0.0.1:5000",
+                "Accept-Encoding": "gzip, deflate",
+                "Connection": "keep-alive",
+                "cache-control": "no-cache"
+            }
+            }
+            var jsons;
+            $.ajax(settings).done(function (response) {
+                jsons = response;
+            console.log(response);
+            console.log(response.length);
+       
+            for (var i = 0; i < jsons.length; i++) { 
+                var row = $('<tr/>');    
+                for (var colIndex = 0; colIndex < Object.keys(jsons[0]).length; colIndex++) 
+                { 
+                    var val = jsons[i][Object.keys(jsons[0])[colIndex]]; 
+                      
+                    // If there is any key, which is matching 
+                    // with the column name 
+                    if (val == null) val = "";   
+                    row.append($('<td/>').html(val)); 
+                } 
+                  
+                  console.log(row);
+                // Adding each row to the table 
+                $(selector).append(row); 
+            } 
+
+            });
+        }  
+    </script>
+</body>
+</html>
